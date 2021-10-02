@@ -1,25 +1,32 @@
 const Note = require("./lib/note.js");
 const Chord = require("./lib/chord.js");
-const Scale = require("./lib/chord.js");
+const Scale = require("./lib/scale.js");
+const MidiListener = require("./lib/midi_listener.js");
 
+const ALL_NOTE_NAME_TYPES = [new Note.Name(Note.Name.TYPE.C), new Note.Name(Note.Name.TYPE.C_sharp), new Note.Name(Note.Name.TYPE.D), 
+						new Note.Name(Note.Name.TYPE.D_sharp), new Note.Name(Note.Name.TYPE.E), new Note.Name(Note.Name.TYPE.F),
+						new Note.Name(Note.Name.TYPE.F_sharp), new Note.Name(Note.Name.TYPE.G), new Note.Name(Note.Name.TYPE.G_sharp),
+						new Note.Name(Note.Name.TYPE.A), new Note.Name(Note.Name.TYPE.A_sharp), new Note.Name(Note.Name.TYPE.B)];
+
+const piano_range = { min: 21, max: 108 };
 
 var all_notes = [];
 function build_all_notes(){
-	var note_value = 0; // 0 -127
+	var midi_value = 0; // 0 -127
 	
 	const octaves = 9;
 	var octave = 0;
 	for(octave = -1 ; octave <= octaves; octave++){
 		var j;
-		for(j = 0 ; j < Note.ALL_NOTE_TYPES.length; j++){
-			var note_name = Note.ALL_NOTE_TYPES[j].sharp_name;
-			var note = new Note.Note(Note.ALL_NOTE_TYPES[j], note_value, octave);
+		for(j = 0 ; j < ALL_NOTE_NAME_TYPES.length; j++){
+			var note_name = ALL_NOTE_NAME_TYPES[j].sharp_name;
+			var note = new Note(ALL_NOTE_NAME_TYPES[j], midi_value, octave);
 
 			all_notes.push(note);
 
-			note_value++;
+			midi_value++;
 
-			if(note_value == 128) break;
+			if(midi_value == 128) break;
 		}
 	}
 }
@@ -32,6 +39,5 @@ function init(){
 	build_all_notes();
 }
 
-
-module.exports = {init, Note, Chord, Scale, all_notes};
+module.exports = {init, Note, Chord, Scale, MidiListener, all_notes, piano_range};
 
