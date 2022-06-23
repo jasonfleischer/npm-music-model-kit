@@ -1,6 +1,7 @@
 const Note = require("./lib/note.js");
 const Chord = require("./lib/chord.js");
 const Scale = require("./lib/scale.js");
+const KeySignature = require("./lib/key_signature.js");
 const Interval = require("./lib/interval.js");
 const MidiListener = require("./lib/midi_listener.js");
 
@@ -9,6 +10,7 @@ const piano_range = { min: 21, max: 108 };
 const guitar_range = { min: 40, max: 84 };
 
 var all_notes = [];
+var all_key_signatures = [];
 
 function init(){
 	function build_all_notes(){
@@ -31,6 +33,15 @@ function init(){
 		}
 	}
 	build_all_notes();
+
+	function build_all_key_signatures(){
+		let keySignatureTypes = KeySignature.TYPE;
+		for(const key in keySignatureTypes){
+			let value = keySignatureTypes[key];
+			all_key_signatures.push(new KeySignature(value));
+		}
+	}
+	build_all_key_signatures();
 }
 
 function changeNoteColors(color="#00f"){
@@ -40,5 +51,5 @@ function changeNoteColors(color="#00f"){
     }
 }
 
-module.exports = {init, Note, Chord, Scale, Interval, MidiListener, all_notes, piano_range, guitar_range, changeNoteColors};
+module.exports = {init, Note, Chord, Scale, KeySignature, Interval, MidiListener, all_notes, all_key_signatures, piano_range, guitar_range, changeNoteColors};
 
